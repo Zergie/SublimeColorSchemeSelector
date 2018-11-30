@@ -8,30 +8,7 @@ class SelectColorSchemeCommand(sublime_plugin.WindowCommand):
         if int(sublime.version()) > 3000:
             color_schemes = sublime.find_resources("*.tmTheme")
         else:
-            color_schemes = [
-                "All Hallow's Eve",
-                "Amy",
-                "Blackboard",
-                "Cobalt",
-                "Dawn",
-                "Eiffel",
-                "Espresso Libre",
-                "IDLE",
-                "LAZY",
-                "Mac Classic",
-                "MagicWB (Amiga)",
-                "Monokai Bright",
-                "Monokai",
-                "Pastels on Dark",
-                "Slush & Poppies",
-                "Solarized (Dark)",
-                "Solarized (Light)",
-                "SpaceCadet",
-                "Sunburst",
-                "Twilight",
-                "Zenburnesque",
-                "iPlastic"
-            ]
+            color_schemes = [u"Packages/Color Scheme - Default/" + x for x in os.listdir("./Data/Packages/Color Scheme - Default/") if x.endswith(".tmTheme")]
 
         current_scheme_index = self.current_scheme_index(color_schemes)
 
@@ -64,7 +41,10 @@ class SelectColorSchemeCommand(sublime_plugin.WindowCommand):
 
     def current_scheme_index(self, color_schemes):
         current_scheme = self.load_settings().get('color_scheme')
-        return [c for c in color_schemes].index(current_scheme)
+        try:
+            return color_schemes.index(current_scheme)
+        except:
+            return 0
 
     def set_color_scheme(self, color_scheme_path):
         self.load_settings().set('color_scheme', color_scheme_path)
