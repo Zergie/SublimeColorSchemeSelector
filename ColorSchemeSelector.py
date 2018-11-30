@@ -8,7 +8,11 @@ class SelectColorSchemeCommand(sublime_plugin.WindowCommand):
         if int(sublime.version()) > 3000:
             color_schemes = sublime.find_resources("*.tmTheme")
         else:
-            color_schemes = [u"Packages/Color Scheme - Default/" + x for x in os.listdir("./Data/Packages/Color Scheme - Default/") if x.endswith(".tmTheme")]
+            color_schemes = []
+            for subdir in os.listdir(sublime.installed_packages_path() + "/../Packages"):
+                for file in os.listdir(sublime.installed_packages_path() + "/../Packages/" + subdir):
+                    if file.endswith(".tmTheme"):
+                        color_schemes.append('Packages/' + subdir + '/' + file)
 
         current_scheme_index = self.current_scheme_index(color_schemes)
 
